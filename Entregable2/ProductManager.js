@@ -1,78 +1,100 @@
 const fs = require('fs');
 
 class ProductManager {
-    constructor(path) {
-        this.path = path;
+    constructor(filePath) {
+        this.path = filePath;
+        this.products = [];
+        this.loadProducts();
     }
 
-    // Utilizo un método para llamar a los diferentes métodos que dan de alta un producto
-    addProduct(product) {
-        const products = this.getProducts();
-        product.id = this.generateId(products);
-        products.push(product);
-        this.saveProducts(products);
-        return product.id;
-    }
-
-    // Recupero los productos que tengo en el archivo en formato JSON y los parseo a un String
-    getProducts() {
+    loadProducts() {
         try {
-            const data = fs.readFileSync(this.path, 'utf-8');
-            return JSON.parse(data);
-        } catch (error) {
-            // Si el archivo no existe o está vacío, retorna un arreglo vacío
-            return [];
+            const data = fs.readFileSync(this.path, 'utf8');
+            if (data) {
+                this.products = JSON.parse(data);
+            }
+        } catch (err) {
+            return []
+            //console.error('Error loading products:', err);
         }
     }
 
-    // Recupero un producto en base a su ID
+    saveProducts() {
+        try {
+            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2));
+        } catch (err) {
+            console.error('Error saving products:', err);
+        }
+    }
+
+    generateId() {
+        return this.products.length > 0
+            ? Math.max(...this.products.map((product) => product.id)) + 1
+            : 1;
+    }
+
+    addProduct(product) {
+        if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.thumbnail || product.thumbnail == "" || !product.code || product.code == "" || !product.stock) {
+            console.error('All fields are required');
+            return;
+        }
+
+        const existingProduct = this.products.find((p) => p.code === product.code);
+        if (existingProduct) {
+            console.error('Product with the same code already exists');
+            return;
+        }
+
+        const newProduct = {
+            id: this.generateId(),
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            thumbnail: product.thumbnail,
+            code: product.code,
+            stock: product.stock,
+        };
+
+        this.products.push(newProduct);
+        this.saveProducts();
+    }
+
+    getProducts() {
+        return this.products;
+    }
+
     getProductById(id) {
-        const products = this.getProducts();
-        return products.find(product => product.id === id);
+        const product = this.products.find((p) => p.id === id);
+        if (!product) {
+            console.error('Not found');
+            return;
+        }
+        return product;
     }
 
-    // Actualizo un producto en base al ID
     updateProduct(id, updatedFields) {
-        const products = this.getProducts();
-        const index = products.findIndex(product => product.id === id);
-
-        if (index !== -1) {
-            const updatedProduct = { ...products[index], ...updatedFields };
-            products[index] = updatedProduct;
-            this.saveProducts(products);
-            return true;
+        const productIndex = this.products.findIndex((p) => p.id === id);
+        if (productIndex === -1) {
+            console.error('Not found');
+            return;
+        } else {
+            console.log("Producto para update encontrado!");
         }
 
-        return false;
+        const updatedProduct = { ...this.products[productIndex], ...updatedFields };
+        this.products[productIndex] = updatedProduct;
+        this.saveProducts();
     }
 
-    // Borro el producto por ID
     deleteProduct(id) {
-        const products = this.getProducts();
-        const index = products.findIndex(product => product.id === id);
-
-        if (index !== -1) {
-            products.splice(index, 1);
-            this.saveProducts(products);
-            return true;
+        const productIndex = this.products.findIndex((p) => p.id === id);
+        if (productIndex === -1) {
+            console.error('Not found');
+            return;
         }
 
-        return false;
-    }
-
-    // Guardo los productos en formato JSON
-    saveProducts(products) {
-        const data = JSON.stringify(products, null, 2);
-        fs.writeFileSync(this.path, data);
-    }
-
-    // Genero el ID en base al objeto.length
-    generateId(products) {
-        if (products.length === 0) {
-            return 1;
-        }
-        const maxId = Math.max(...products.map(product => product.id));
-        return maxId + 1;
+        this.products.splice(productIndex, 1);
+        this.saveProducts();
     }
 }
 
