@@ -15,8 +15,8 @@ const productService = new ProductManager("./products.json");
 
 app.get("/productos",(req,res)=>{
     try {
-        console.log("req.query: ",req.query);
         const result = productService.getProducts();
+        console.log("result: ", result);
         res.send(result);
     } catch (error) {
         res.send(error.message);
