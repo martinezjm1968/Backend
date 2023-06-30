@@ -15,12 +15,23 @@ app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port
 
 //crear la instancia de la clase
 const productService = new ProductManager(`./src/products.json`);
+let resultado = 0;
 
 app.get("/products",(req,res)=>{
     try {
         const result = productService.getProducts();
         console.log("result: ", result);
-        res.send(result);
+        const limite = parseInt(req.query.limit);
+        console.log("limite: ", limite);
+        if (limite>0) {
+            resultado = result.filter(producto=>producto.id <= limite);
+                
+            
+        } else {
+            resultado = result;
+        }
+
+        res.send(resultado);
     } catch (error) {
         res.send(error.message);
     }
