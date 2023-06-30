@@ -25,19 +25,24 @@ app.get("/products",(req,res)=>{
         console.log("limite: ", limite);
         if (limite>0) {
             resultado = result.filter(producto=>producto.id <= limite);
-                
-            
         } else {
             resultado = result;
         }
-
         res.send(resultado);
     } catch (error) {
         res.send(error.message);
     }
 });
 
-
+app.get("/products/:pid",(req,res)=>{
+    try {
+    const pid = parseInt(req.params.pid);
+    const result = productService.getProductById(pid);
+    res.send(result);
+    } catch (error) {
+        res.send(error.message);
+    }
+});
 
 
 
