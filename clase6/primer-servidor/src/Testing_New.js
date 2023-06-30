@@ -27,6 +27,16 @@ product = {
     stock: 45,
 };
 manager.addProduct(product);
+product = {
+    "id": 3,
+    "title": "producto  2",
+    "description": "Este es un producto 2",
+    "price": 104,
+    "thumbnail": "Sin imagen",
+    "code": "abc125",
+    "stock": 90
+  }
+  manager.addProduct(product);
 
 // Obtener los productos nuevamente (debe aparecer el producto recién agregado)
 console.log("Productos cargados: ",manager.getProducts());

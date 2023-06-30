@@ -2,6 +2,7 @@
 import express from "express";
 import { ProductManager } from "./ProductManager.js";
 
+
 const port = 8080;
 
 //creamos la aplicacion del servidor
@@ -10,10 +11,12 @@ const app = express();
 //levantar el servidor
 app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
 
-//crear la instancia de la clase
-const productService = new ProductManager("./products.json");
+// Hasta acá está la parte del servidor!!!!
 
-app.get("/productos",(req,res)=>{
+//crear la instancia de la clase
+const productService = new ProductManager(`./src/products.json`);
+
+app.get("/products",(req,res)=>{
     try {
         const result = productService.getProducts();
         console.log("result: ", result);
