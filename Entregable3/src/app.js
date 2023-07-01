@@ -38,7 +38,12 @@ app.get("/products/:pid",(req,res)=>{
     try {
     const pid = parseInt(req.params.pid);
     const result = productService.getProductById(pid);
-    res.send(result);
+    if (!result) {
+        console.log("El producto no existe!");
+    } else {
+        res.send(result);
+    }
+    
     } catch (error) {
         res.send(error.message);
     }
