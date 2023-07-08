@@ -13,11 +13,14 @@ export class ProductManager {
             const data = await fs.promises.readFile(this.path, 'utf8');
             if (data) {
                 this.products = JSON.parse(data);
+            } else {
+                throw new Error("No es posible obtener los productos!");
             }
             console.log("loadProducts: ", this.products);
             return this.products;
-        } catch (err) {
-            console.error('Error loading products:', err);
+        } catch (error) {
+            console.error('Error loading products:', error);
+            throw error;
             return [];
         }
     }
@@ -25,8 +28,8 @@ export class ProductManager {
     async saveProducts() {
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
-        } catch (err) {
-            console.error('Error saving products:', err);
+        } catch (error) {
+            console.error('Error saving products:', error);
         }
     }
 

@@ -30,5 +30,5 @@ const updatedFields = { price: 250 };
 manager.updateProduct(productId, updatedFields);
 
 // Eliminar un producto (especifica un ID válido)
-manager.deleteProduct(productId);
-console.log("Obtener los produtos nuevamente: ",manager.getProducts());
+//manager.deleteProduct(productId);
+//console.log("Obtener los produtos nuevamente: ",manager.getProducts());

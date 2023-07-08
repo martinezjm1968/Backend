@@ -8,23 +8,23 @@ export class ProductManager {
         this.loadProducts();
     }
 
-    loadProducts() {
+    async loadProducts() {
         try {
-            const data = fs.readFileSync(this.path, 'utf8');
+            const data = await fs.promises.readFile(this.path, 'utf8');
             if (data) {
                 this.products = JSON.parse(data);
             }
             console.log("loadProducts: ", this.products);
-            return this.products
+            return this.products;
         } catch (err) {
-            return []
-            //console.error('Error loading products:', err);
+            console.error('Error loading products:', err);
+            return [];
         }
     }
 
-    saveProducts() {
+    async saveProducts() {
         try {
-            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2));
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
         } catch (err) {
             console.error('Error saving products:', err);
         }
