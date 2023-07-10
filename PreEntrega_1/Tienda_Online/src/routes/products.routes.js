@@ -57,10 +57,10 @@ router.get("/:pid", async (req, res) => {
 
 
 // Doy de alta el producto
-router.post("/", validateFields, (req, res) => {
+router.post("/", validateFields, async (req, res) => {
     try {
         const productInfo = req.body;
-        const productCreated =  productService.addProduct(productInfo);
+        const productCreated =  await productService.addProduct(productInfo);
         res.json({ status: "success", data: productCreated, message: "producto creado" });
     } catch (error) {
         res.json({ status: "error", message: error.message });

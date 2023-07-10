@@ -9,9 +9,11 @@ export class ProductManager {
         this.products = [];
         this.loadProducts();
     }
+
     fileExists(){
         return fs.existsSync(this.path);
     }
+
 
     async loadProducts() {
         try {
@@ -25,9 +27,18 @@ export class ProductManager {
             return this.products;
         } catch (error) {
             console.error('Error loading products:', error);
-            throw error;
             return [];
         }
+    }
+
+    generateId() {
+        let newId = uuidv4();
+        return newId
+        /*
+        return this.products.length > 0
+            // ? Math.max(...this.products.map((product) => product.id)) + 1
+            : 1;
+        */
     }
 
     async saveProducts() {
@@ -38,18 +49,8 @@ export class ProductManager {
         }
     }
 
-    generateId() {
-        let newId = uuidv4();
-        return newId
-        /*
-        return this.products.length > 0
-            ? Math.max(...this.products.map((product) => product.id)) + 1
-            : 1;
-            */
-    }
-
     addProduct(product) {
-        if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.thumbnail || product.thumbnail == "" || !product.code || product.code == "" || !product.stock) {
+        if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.code || product.code == "" || !product.stock || !product.status || product.category == "" || !product.category) {
             console.error('All fields are required');
             return;
         }
@@ -68,10 +69,13 @@ export class ProductManager {
             thumbnail: product.thumbnail,
             code: product.code,
             stock: product.stock,
+            status: product.status,
+            category: product.category
         };
 
         this.products.push(newProduct);
         this.saveProducts();
+        return newProduct;
     }
 
     getProducts() {
@@ -112,66 +116,3 @@ export class ProductManager {
         this.saveProducts();
     }
 }
-
-
-
-
-
-
-/*
-export class ProductManager{
-    constructor(fileName){
-        this.path=path.join(__dirname,`/files/${fileName}`); //src/files/products.json
-    };
-
-    fileExists(){
-        return fs.existsSync(this.path);
-    }
-
-    async get(){
-        try {
-            if(this.fileExists()){
-                const content = await fs.promises.readFile(this.path,"utf-8");
-                const products = JSON.parse(content);
-                return products;
-            } else {
-                throw new Error("No es posible obtener los productos");
-            }
-        } catch (error) {
-            throw error;
-        }
-    };
-
-    async getById(id){
-        //devuelve el producto que cumple con el id recibido
-    };
-
-    async save(product){
-        try {
-            if(this.fileExists()){
-                const content = await fs.promises.readFile(this.path,"utf-8");
-                const products = JSON.parse(content);
-                // let newId = 1;
-                // if(products.length>0){
-                //     newId= products[products.length-1].id+1;
-                // }
-                let newId = uuidv4();
-                const newProduct = {
-                    id:newId,
-                    ...product
-                };
-                products.push(newProduct);
-                await fs.promises.writeFile(this.path,JSON.stringify(products,null,'\t'));
-                return newProduct;
-            } else {
-                throw new Error("No es posible esta operacion");
-            }
-        } catch (error) {
-            throw error;
-        }
-    };
-}
-
-// export {ProductManager}
-
-*/
