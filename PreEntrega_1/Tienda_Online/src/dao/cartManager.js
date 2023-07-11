@@ -81,8 +81,8 @@ export class CartManager {
         }
     }
 
-
-    async updateCart(cid, pid) {
+    // Actualizo carrito
+    async updateCart(cid, updatedFields) {
         try {
             let cart = await this.getCartById(cid);
             if (!cart) return;
@@ -93,6 +93,19 @@ export class CartManager {
             await fs.promises.writeFile(this.path, data);
             console.log('Carrito actualizado:', cart);
             return 'Archivo de carrito guardado.';
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    // Borro carrito pero en esta entrega no se utiliza!
+    async deleteProduct(id) {
+        try {
+            let index = this.carts.findIndex((cart) => cart.id === id);
+            if (index === -1) return;
+            this.carts.splice(index, 1);
+            await this.saveCarts();
+            console.log(`Carrito con ID ${id} ha sido eliminado.`);
         } catch (error) {
             throw new Error(error.message);
         }

@@ -13,6 +13,7 @@ export class ProductManager {
         return fs.existsSync(this.path);
     }
 
+    // cargo los productos
     async loadProducts() {
         try {
             const data = await fs.promises.readFile(this.path, 'utf8');
@@ -30,6 +31,7 @@ export class ProductManager {
         }
     }
 
+    // Guardo los productos
     async saveProducts() {
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
@@ -38,6 +40,7 @@ export class ProductManager {
         }
     }
 
+    // Metodo para generar IDs string
     generateId() {
         let newId = uuidv4();
         return newId
@@ -48,6 +51,7 @@ export class ProductManager {
             */
     }
 
+    // Sumar productos
     addProduct(product) {
         if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.thumbnail || product.thumbnail == "" || !product.code || product.code == "" || !product.stock) {
             console.error('All fields are required');
@@ -74,10 +78,12 @@ export class ProductManager {
         this.saveProducts();
     }
 
+    // Traer productos 
     getProducts() {
         return this.products;
     }
 
+    // Traer productos por ID
     getProductById(id) {
         const product = this.products.find((p) => p.id === id);
         if (!product) {
@@ -87,6 +93,7 @@ export class ProductManager {
         return product;
     }
 
+    // Actualizar un producto por ID
     updateProduct(id, updatedFields) {
         const productIndex = this.products.findIndex((p) => p.id === id);
         if (productIndex === -1) {
@@ -101,6 +108,7 @@ export class ProductManager {
         this.saveProducts();
     }
 
+    // Borrado de Productos
     deleteProduct(id) {
         const productIndex = this.products.findIndex((p) => p.id === id);
         if (productIndex === -1) {

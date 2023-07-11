@@ -8,8 +8,8 @@ const router = Router();
 // Valido los campos
 const validateFields = (req, res, next) => {
     const productInfo = req.body;
-    if (!productInfo.title || !productInfo.description || !productInfo.price) {
-        return res.json({ status: "error", message: "campos incompletos" })
+    if (!productInfo.title || !productInfo.description || !productInfo.price || !productInfo.code || !productInfo.stock || !productInfo.status || !productInfo.category) {
+        return res.json({ status: "error", message: "Campos incompletos! Complete los mismos." })
     } else {
         next();
     }
@@ -61,7 +61,7 @@ router.post("/", validateFields, async (req, res) => {
     try {
         const productInfo = req.body;
         const productCreated =  await productService.addProduct(productInfo);
-        res.json({ status: "success", data: productCreated, message: "producto creado" });
+        res.json({ status: "success", data: productCreated, message: "Producto creado satisfactoriamente!" });
     } catch (error) {
         res.json({ status: "error", message: error.message });
     }
@@ -86,7 +86,7 @@ router.delete("/:pid", (req, res) => {
     try {
         let pid = req.params.pid;
         let result =  productService.deleteProduct(pid);
-        res.json({ status: "success", data: deleteProduct, message: "producto borrado" });
+        res.json({ status: "success", data: deleteProduct, message: "Producto borrado!" });
     } catch (error) {
         res.json({ status: 'error', message: error.message });
     }

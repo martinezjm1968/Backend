@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
             res.send(result.slice(0, limit));
         }
     } catch (error) {
-        throw new Error(error.message);
+        res.json({ status: "error", message: error.message });
     }
 });
 
@@ -39,7 +39,7 @@ router.get('/:cid', async (req, res) => {
         let result = await cartCreated.getCartById(cid);
         res.send(result);
     } catch (error) {
-        throw new Error(error.message);
+        res.json({ status: "error", message: error.message });
     }
 
 });
@@ -68,7 +68,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        throw new Error(error.message);
+        res.json({ status: "error", message: error.message });
     }
 });
 
@@ -80,7 +80,7 @@ router.put('/:cid', async (req, res) => {
         result.id = cid;
         res.send(result);
     } catch (error) {
-        throw new Error(error.message);
+        res.json({ status: "error", message: error.message });
     }
 });
 
