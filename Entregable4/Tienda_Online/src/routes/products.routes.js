@@ -61,6 +61,10 @@ router.post("/", validateFields, async (req, res) => {
     try {
         const productInfo = req.body;
         const productCreated =  await productService.addProduct(productInfo);
+
+        // Emitir el evento al servidor de websockets
+        socketServer.emit('nuevoProducto', productCreated);
+
         res.json({ status: "success", data: productCreated, message: "Producto creado satisfactoriamente!" });
     } catch (error) {
         res.json({ status: "error", message: error.message });
@@ -74,6 +78,10 @@ router.put("/:pid", validateFields,  (req, res) => {
         let product = req.body;
         let result =  productService.updateProduct(pid, product);
         result.id = pid;
+
+        // Emitir el evento al servidor de websockets
+        socketServer.emit('actualizoProducto', result);
+
         res.json({ status: 'success', data: result });
     } catch (error) {
         res.json({ status: 'error', message: error.message });
@@ -86,6 +94,10 @@ router.delete("/:pid", (req, res) => {
     try {
         let pid = req.params.pid;
         let result =  productService.deleteProduct(pid);
+
+        // Emitir el evento al servidor de websockets
+        socketServer.emit('bajaProducto', result);
+
         res.json({ status: "success", data: deleteProduct, message: "Producto borrado!" });
     } catch (error) {
         res.json({ status: 'error', message: error.message });

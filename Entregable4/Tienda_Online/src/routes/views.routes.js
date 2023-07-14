@@ -6,6 +6,8 @@ const router = Router();
 router.get("/",(req,res)=>{
     //indicar la vista
     res.render("home");
+
+    // Aca debo desarrollar el paso 1 desde http como muestra abajo y esta comentado!
 });
 
 /*
