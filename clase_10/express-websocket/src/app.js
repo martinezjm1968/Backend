@@ -2,6 +2,7 @@ import express from "express";
 import handlebars from "express-handlebars";
 import { __dirname } from "./utils.js";
 import path from "path";
+import { viewsRouter } from "./routes/views.routes.js";
 import {Server} from "socket.io";
 
 import { viewsRouter } from "./routes/views.routes.js";
@@ -21,6 +22,9 @@ const httpsServer = app.listen(port,()=>console.log(`Server is listening on port
 app.engine('.hbs', handlebars.engine({extname: '.hbs'}));//inciar el motor de plantillas handlebars
 app.set('view engine', '.hbs');//indicar que motor vamos a utilizar
 app.set('views', path.join(__dirname,"/views"));//ruta de la carpeta de vistas
+
+app.use(express.static(__dirname+'/public'));
+app.use('/', viewsRouter);
 
 // Crear servidor de websocket
 const socketServer = new Server(httpsServer);

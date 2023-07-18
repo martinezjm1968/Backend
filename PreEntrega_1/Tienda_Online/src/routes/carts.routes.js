@@ -21,10 +21,10 @@ router.get("/", async (req, res) => {
     try {
         let limit = Number(req.query.limit);
         if (!limit) {
-            let result = await cartCreated.getAll();
+            let result = await cartService .getAll();
             res.send(result);
         } else {
-            let result = await cartCreated.getAll();
+            let result = await cartService .getAll();
             res.send(result.slice(0, limit));
         }
     } catch (error) {
@@ -76,7 +76,7 @@ router.put('/:cid', async (req, res) => {
     try {
         let cid = req.params.cid;
         let cart = req.body;
-        let result = await cartCreated.updateCart(cid, cart);
+        let result = await cartService .updateCart(cid, cart);
         result.id = cid;
         res.send(result);
     } catch (error) {

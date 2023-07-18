@@ -1,16 +1,16 @@
-import {__dirname} from "../../src/utils.js";
+import { __dirname } from "../../src/utils.js";
 import path from "path";
 import fs from "fs";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export class ProductManager {
     constructor(fileName) {
-        this.path=path.join(__dirname,`/files/${fileName}`); //src/files/products.json
+        this.path = path.join(__dirname, `/files/${fileName}`); //src/files/products.json
         this.products = [];
         this.loadProducts();
     }
 
-    fileExists(){
+    fileExists() {
         return fs.existsSync(this.path);
     }
 
@@ -28,6 +28,7 @@ export class ProductManager {
         } catch (error) {
             console.error('Error loading products:', error);
             return [];
+            throw new Error("Error en la carga de productos")
         }
     }
 
@@ -46,67 +47,90 @@ export class ProductManager {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
         } catch (error) {
             console.error('Error saving products:', error);
+            throw new Error("Error al querer guardar el/los producto/s!")
         }
     }
 
     addProduct(product) {
-        if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.code || product.code == "" || !product.stock || !product.status || product.category == "" || !product.category) {
-            console.error('All fields are required');
-            return;
+        try {
+            if (!product.title || product.title == "" || !product.description || product.description == "" || !product.price || product.price == 0 || !product.code || product.code == "" || !product.stock || !product.status || product.category == "" || !product.category) {
+                console.error('All fields are required');
+                return;
+            }
+
+            const existingProduct = this.products.find((p) => p.code === product.code);
+            if (existingProduct) {
+                console.error('Product with the same code already exists');
+                return;
+            }
+
+            const newProduct = {
+                id: this.generateId(),
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                thumbnail: product.thumbnail,
+                code: product.code,
+                stock: product.stock,
+                status: product.status,
+                category: product.category
+            };
+
+            this.products.push(newProduct);
+            this.saveProducts();
+            return newProduct;
+
+        } catch (error) {
+            throw new Error("Error al querer dar de alta el producto!")
         }
 
-        const existingProduct = this.products.find((p) => p.code === product.code);
-        if (existingProduct) {
-            console.error('Product with the same code already exists');
-            return;
-        }
-
-        const newProduct = {
-            id: this.generateId(),
-            title: product.title,
-            description: product.description,
-            price: product.price,
-            thumbnail: product.thumbnail,
-            code: product.code,
-            stock: product.stock,
-            status: product.status,
-            category: product.category
-        };
-
-        this.products.push(newProduct);
-        this.saveProducts();
-        return newProduct;
     }
 
     getProducts() {
-        return this.products;
+        try {
+            return this.products;
+        } catch (error) {
+            throw new Error("Error al querer listar los productos!")
+        }
+
     }
 
     getProductById(id) {
-        const product = this.products.find((p) => p.id === id);
-        if (!product) {
-            console.error('Not found');
-            return;
-        }
-        return product;
-    }
-
-    updateProduct(id, updatedFields) {
-        const productIndex = this.products.findIndex((p) => p.id === id);
-        if (productIndex === -1) {
-            console.error('Not found');
-            return;
-        } else {
-            console.log("Producto para update encontrado!");
+        try {
+            const product = this.products.find((p) => p.id === id);
+            if (!product) {
+                console.error('Not found');
+                return;
+            }
+            return product;
+        } catch (error) {
+            throw new Error("Error al querer listar el producto!")
         }
 
-        const updatedProduct = { ...this.products[productIndex], ...updatedFields };
-        this.products[productIndex] = updatedProduct;
-        this.saveProducts();
     }
 
-    deleteProduct(id) {
-        const productIndex = this.products.findIndex((p) => p.id === id);
+    async updateProduct(id, updatedFields) {
+        try {
+            const productIndex = this.products.findIndex((p) => p.id === id);
+            if (productIndex === -1) {
+                console.error('Not found');
+                return;
+            } else {
+                console.log("Producto para update encontrado!");
+            }
+
+            const updatedProduct = { ...this.products[productIndex], ...updatedFields };
+            this.products[productIndex] = updatedProduct;
+            this.saveProducts();
+        } catch (error) {
+            throw new Error("Error al querer actualizar el producto!")
+        }
+
+    }
+
+    async deleteProduct(id) {
+        try {
+            const productIndex = this.products.findIndex((p) => p.id === id);
         if (productIndex === -1) {
             console.error('Not found');
             return;
@@ -114,5 +138,9 @@ export class ProductManager {
 
         this.products.splice(productIndex, 1);
         this.saveProducts();
+        } catch (error) {
+            throw new Error("Error al querer borrar el producto!")
+        }
+        
     }
 }

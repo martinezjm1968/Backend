@@ -68,11 +68,11 @@ router.post("/", validateFields, async (req, res) => {
 });
 
 // Actualizo el producto segun id
-router.put("/:pid", validateFields,  (req, res) => {
+router.put("/:pid", validateFields,  async (req, res) => {
     try {
         let pid = req.params.pid;
         let product = req.body;
-        let result =  productService.updateProduct(pid, product);
+        let result =  await productService.updateProduct(pid, product);
         result.id = pid;
         res.json({ status: 'success', data: result });
     } catch (error) {
@@ -82,10 +82,10 @@ router.put("/:pid", validateFields,  (req, res) => {
 });
 
 // Doy de baja el producto segun ID
-router.delete("/:pid", (req, res) => { 
+router.delete("/:pid", async (req, res) => { 
     try {
         let pid = req.params.pid;
-        let result =  productService.deleteProduct(pid);
+        let result =  await productService.deleteProduct(pid);
         res.json({ status: "success", data: deleteProduct, message: "Producto borrado!" });
     } catch (error) {
         res.json({ status: 'error', message: error.message });
