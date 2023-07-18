@@ -1,5 +1,5 @@
 import express from "express";
-import handlebars from "express-handlebars";
+import {engine} from "express-handlebars";
 import { __dirname } from "./utils.js";
 import path from "path";
 import {Server} from "socket.io";
@@ -18,12 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // Guardar el servidor http en una variable
-const httpsServer = app.listen(port,()=>console.log(`Server is listening on port ${port}`));
+const httpsServer = app.listen(port,()=>console.log(`Server esta funcionando en el puerto ${port}`));
 
 //configuracion para utilizar handlebars
-app.engine('.hbs', handlebars.engine({extname: '.hbs'}));//inciar el motor de plantillas handlebars
-app.set('view engine', '.hbs');//indicar que motor vamos a utilizar
-app.set('views', path.join(__dirname,"/views"));//ruta de la carpeta de vistas
+//configuracion de handlebars
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname,"/views"));
 
 // Crear servidor de websocket
 const socketServer = new Server(httpsServer);
@@ -52,4 +53,14 @@ socketServer.on("connection", (socketConnected)=>{
 //routes
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use(viewsRouter);
+app.use("/home",viewsRouter);
+
+///////////
+/*
+
+const ProductsFilePath = path.join(__dirname,"files","products.json");
+const ProductService = new ProductManager(ProductsFilePath);
+
+app.get("/home",)
+const productos = ProductService.getProducts();
+*/

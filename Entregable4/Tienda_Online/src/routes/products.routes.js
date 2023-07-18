@@ -64,7 +64,7 @@ router.post("/", validateFields, async (req, res) => {
 
         // Emitir el evento al servidor de websockets. Lo podría encontrar si en app así lo declarara como
         // io.emit('nuevoProducto', productCreated); -> ese io sería como se nombra en app.js.
-        socketClient.emit('nuevoProducto', productCreated);
+        //socketClient.emit('nuevoProducto', productCreated);
 
         res.json({ status: "success", data: productCreated, message: "Producto creado satisfactoriamente!" });
     } catch (error) {
@@ -81,7 +81,7 @@ router.put("/:pid", validateFields,  (req, res) => {
         result.id = pid;
 
         // Emitir el evento al servidor de websockets
-        socketClient.emit('actualizoProducto', result);
+        //socketClient.emit('actualizoProducto', result);
 
         res.json({ status: 'success', data: result });
     } catch (error) {
@@ -97,7 +97,7 @@ router.delete("/:pid", (req, res) => {
         let result =  productService.deleteProduct(pid);
 
         // Emitir el evento al servidor de websockets
-        socketClient.emit('bajaProducto', result);
+        //socketClient.emit('bajaProducto', result);
 
         res.json({ status: "success", data: deleteProduct, message: "Producto borrado!" });
     } catch (error) {
