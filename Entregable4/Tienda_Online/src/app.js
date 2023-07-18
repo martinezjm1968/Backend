@@ -28,6 +28,7 @@ app.set('views', path.join(__dirname,"/views"));//ruta de la carpeta de vistas
 // Crear servidor de websocket
 const socketServer = new Server(httpsServer);
 let messages = [];
+
 // Crear el canal de comunicacion, detectar socket del cliente
 socketServer.on("connection", (socketConnected)=>{
     console.log(`Nuevo cliente conectado  ${socketConnected.id}`);
@@ -35,9 +36,16 @@ socketServer.on("connection", (socketConnected)=>{
     socketConnected.on("messageKey", (data)=>{
         console.log(data);
         messages.push({userId:socketConnected.id,message:data});
+    });
+
+    
+
+    socketConnected.on("nuevoProducto", (nuevoProd)=>{
+        console.log(data);
+       // messages.push({userId:socketConnected.id,message:data});
 
         // Enviar todos los mensajes a todos los clientes
-        socketServer.emit("messageHistory", messages);
+        socketServer.emit("nuevoProducto", data);
     });
 });
 
