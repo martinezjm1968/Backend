@@ -61,11 +61,6 @@ router.post("/", validateFields, async (req, res) => {
     try {
         const productInfo = req.body;
         const productCreated =  await productService.addProduct(productInfo);
-
-        // Emitir el evento al servidor de websockets. Lo podría encontrar si en app así lo declarara como
-        // io.emit('nuevoProducto', productCreated); -> ese io sería como se nombra en app.js.
-        //socketClient.emit('nuevoProducto', productCreated);
-
         res.json({ status: "success", data: productCreated, message: "Producto creado satisfactoriamente!" });
     } catch (error) {
         res.json({ status: "error", message: error.message });
@@ -73,16 +68,12 @@ router.post("/", validateFields, async (req, res) => {
 });
 
 // Actualizo el producto segun id
-router.put("/:pid", validateFields,  (req, res) => {
+router.put("/:pid", validateFields,  async (req, res) => {
     try {
         let pid = req.params.pid;
         let product = req.body;
-        let result =  productService.updateProduct(pid, product);
+        let result =  await productService.updateProduct(pid, product);
         result.id = pid;
-
-        // Emitir el evento al servidor de websockets
-        //socketClient.emit('actualizoProducto', result);
-
         res.json({ status: 'success', data: result });
     } catch (error) {
         res.json({ status: 'error', message: error.message });
@@ -91,14 +82,10 @@ router.put("/:pid", validateFields,  (req, res) => {
 });
 
 // Doy de baja el producto segun ID
-router.delete("/:pid", (req, res) => { 
+router.delete("/:pid", async (req, res) => { 
     try {
         let pid = req.params.pid;
-        let result =  productService.deleteProduct(pid);
-
-        // Emitir el evento al servidor de websockets
-        //socketClient.emit('bajaProducto', result);
-
+        let result =  await productService.deleteProduct(pid);
         res.json({ status: "success", data: deleteProduct, message: "Producto borrado!" });
     } catch (error) {
         res.json({ status: 'error', message: error.message });

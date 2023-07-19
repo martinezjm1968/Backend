@@ -6,6 +6,7 @@ import {Server} from "socket.io";
 import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { viewsRouter } from "./routes/views.routes.js";
+import { ProductManager } from "./dao/productManager.js";
 
 const port = 8080;
 const app = express();
@@ -30,37 +31,30 @@ app.set('views', path.join(__dirname,"/views"));
 const socketServer = new Server(httpsServer);
 let messages = [];
 
-// Crear el canal de comunicacion, detectar socket del cliente
-socketServer.on("connection", (socketConnected)=>{
-    console.log(`Nuevo cliente conectado  ${socketConnected.id}`);
-    // Capturar info del cliente
-    socketConnected.on("messageKey", (data)=>{
-        console.log(data);
-        messages.push({userId:socketConnected.id,message:data});
-    });
-
-    
-
-    socketConnected.on("nuevoProducto", (nuevoProd)=>{
-        console.log(data);
-       // messages.push({userId:socketConnected.id,message:data});
-
-        // Enviar todos los mensajes a todos los clientes
-        socketServer.emit("nuevoProducto", data);
-    });
-});
-
 //routes
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/home",viewsRouter);
+app.use(viewsRouter);
+//app.use("/", viewsRouter);
+//app.use(`/${BASE_PREFIX}/products`, productsRouter)
+//app.use(`/${BASE_PREFIX}/carts`, cartsRouter)
 
-///////////
-/*
+// Crear el canal de comunicacion, detectar socket del cliente
+socketServer.on("connection", async (socketConnected)=>{
+    console.log(`Nuevo cliente conectado  ${socketConnected.id}`);
+    // lista de productos para realtime
+    const listProductRealTime = await ProductManager.getProducts;
+    
+    // enviando lista de productos
+    socketConnected.emit('listProductReal',listProductRealTime );
 
-const ProductsFilePath = path.join(__dirname,"files","products.json");
-const ProductService = new ProductManager(ProductsFilePath);
+    // escuchando mensaje del addProduct
+    socketConnected.on('addProduct', async(product)=>{
+        await ProductManager.addProduct(product);
+    })
 
-app.get("/home",)
-const productos = ProductService.getProducts();
-*/
+    // escuchando mensaje del deleteProduct
+    socketConnected.on('deleteProduct', async(id)=>{
+        await ProductManager.deleteProduct(Number(id));
+    })
+});

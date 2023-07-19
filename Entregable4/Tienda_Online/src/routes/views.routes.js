@@ -5,14 +5,10 @@ const router = Router();
 
 
 //routes
-router.get("/home", (req,res)=>{
+router.get("/", (req,res)=>{
     
     //indicar la vista
     res.render("home");
-});
-router.get("/realtime",(req,res)=>{
-    //indicar la vista
-    res.render("realtime");
 });
 
 
