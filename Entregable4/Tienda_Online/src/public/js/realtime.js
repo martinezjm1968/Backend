@@ -36,12 +36,6 @@ function updateProductList(products) {
       </div>
       
     </article>
-        
-        
-        
-        
-        
-        
         `;
   });
 
