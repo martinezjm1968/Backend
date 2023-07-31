@@ -93,5 +93,16 @@
     "thumbnail": "https://i.ibb.co/4fY5bvZ/z3.png",
     "code": "casd",
     "stock": "1222"
+  },
+  {
+    "id": 17,
+    "title": "Desc23",
+    "description": "desc23",
+    "price": "20000",
+    "category": "zapatillas",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/4fY5bvZ/z1.png",
+    "code": "hassah",
+    "stock": "100"
   }
 ]
