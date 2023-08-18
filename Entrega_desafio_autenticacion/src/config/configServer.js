@@ -1,6 +1,19 @@
 import mongoose from "mongoose";
-const URI = "mongodb+srv://JMMartinez68:mily060601@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
+import { config } from "./config.js";
 
+export const connectDB = async()=>{
+    try {
+        await mongoose.connect(config.mongo.url);
+        console.log("Base de datos conectada");
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+/*
+
+
+import mongoose from "mongoose";
+const URI = "mongodb+srv://JMMartinez68:mily060601>@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
 export const connectDB = () => {
     try {
@@ -12,3 +25,4 @@ export const connectDB = () => {
 };
 
 //export default connectDB
+*/

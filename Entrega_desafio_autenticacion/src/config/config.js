@@ -7,6 +7,6 @@ export const config = {
         cartFile:"carts.json"
     },
     mongo:{
-        url:"URL MONGO"
+        url:"mongodb+srv://JMMartinez68:mily060601>@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
     }
 }
