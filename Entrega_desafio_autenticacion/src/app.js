@@ -17,8 +17,10 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 
 
+
+const PORT = config.server.port;
 const app = express();
-const PORT = process.env.PORT || 8080
+
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,11 +29,9 @@ app.engine("handlebars", handlebars.engine())
 app.set('view engine', 'handlebars');
 app.set("views", __dirname + "/views")
 
-app.use('/api/products', routerP)
-app.use('/api/carts', routerC)
-app.use('/', routerV);
-
-connectDB()
+//app.use('/api/products', routerP)
+//app.use('/api/carts', routerC)
+//app.use('/', routerV);
 
 const httpServer = app.listen(PORT, () => {
     try {
@@ -49,7 +49,7 @@ const socketServer = new Server(httpServer)
 socketProducts(socketServer)
 socketChat(socketServer)
 
-
+connectDB()
 //configuracion de sesiones
 app.use(session({
     store:MongoStore.create({
@@ -63,3 +63,7 @@ app.use(session({
 //routes
 app.use(viewsRouter);
 app.use("/api/sessions", sessionsRouter);
+
+
+
+
