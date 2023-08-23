@@ -8,6 +8,6 @@ export const config = {
         cartFile:"carts.json"
     },
     mongo:{
-        url:"mongodb+srv://JMMartinez68:mily060601>@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
+        url:"mongodb+srv://JMMartinez68:mily060601@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
     }
 }
