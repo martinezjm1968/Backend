@@ -6,10 +6,25 @@ const pm = new ProductManagerMongo()
 
 const routerV = Router()
 
-
+/*
 routerV.get("/", async (req, res) => {
-    const listadeproductos = await pm.getProductsView()
+    try {
+        const listadeproductos = await pm.getProductsView()
+        res.render("home", { listadeproductos })
+    } catch (error) {
+        console.log("Error en views.router: " + error);
+    }
+
+})
+*/
+/*
+routerV.get("/", (req, res) => {
+    const listadeproductos = pm.getProductsView()
     res.render("home", { listadeproductos })
+})*/
+routerV.get("/", (req, res) => {
+    const listadeproductos = pm.getProductsView()
+    res.render("realtimeproducts")
 })
 
 routerV.get("/realtimeproducts", (req, res) => {
@@ -20,21 +35,21 @@ routerV.get("/chat", (req, res) => {
     res.render("chat")
 })
 
-routerV.get("/registro",showLoginView,(req,res)=>{
+routerV.get("/registro", showLoginView, (req, res) => {
     res.render("signup");
 });
 
-routerV.get("/login", showLoginView, (req,res)=>{
+routerV.get("/login", showLoginView, (req, res) => {
     res.render("login");
 });
 
-routerV.get("/cambio-password", showLoginView, (req,res)=>{
+routerV.get("/cambio-password", showLoginView, (req, res) => {
     res.render("changePassword")
 });
 
-routerV.get("/perfil", checkUserAuthenticated, (req,res)=>{
+routerV.get("/perfil", checkUserAuthenticated, (req, res) => {
     console.log(req.session);
-    res.render("profile",{user: req.session.userInfo});
+    res.render("profile", { user: req.session.userInfo });
 });
 
 

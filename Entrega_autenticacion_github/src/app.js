@@ -9,24 +9,26 @@ import { initializePassport } from "./config/passportConfig.js";
 import passport from "passport";
 import  viewsRouter  from "./routes/views.router.js";
 import { sessionsRouter } from "./routes/sessions.routes.js";
-
-import handlebars from 'express-handlebars';
+//import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import {connectDB} from "./config/configServer.js"
 //socketservers
 import socketProducts from "./listeners/socketProducts.js"
 import socketChat from './listeners/socketChat.js';
 
+
+
 const PORT = config.server.port;
 const app = express();
 
-//app.use(express.static(__dirname + "/public"));
+
+app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const httpServer = app.listen(PORT, () => {
     try {
-        console.log(`Listening to the port ${PORT}\nAcceder a:`);
+        console.log(`Listening to the port ${PORT}\n`);
         //console.log(`\t1). http://localhost:${PORT}/api/products`)
         //console.log(`\t2). http://localhost:${PORT}/api/carts`);
     }
@@ -55,21 +57,13 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 const socketServer = new Server(httpServer)
 
 socketProducts(socketServer)
 socketChat(socketServer)
 
 connectDB()
-//configuracion de sesiones
-app.use(session({
-    store:MongoStore.create({
-        mongoUrl:config.mongo.url
-    }),
-    secret:config.server.secretSession,
-    resave:true,
-    saveUninitialized:true
-}));
 
 //routes
 app.use(viewsRouter);

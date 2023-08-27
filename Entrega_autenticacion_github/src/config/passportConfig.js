@@ -64,7 +64,7 @@ export const initializePassport = ()=>{
         },
         async(accesstoken,refreshToken,profile,done)=>{
             try {
-                // console.log("profile", profile);
+                console.log("profile", profile);
                 //verificar si ya el usuario esta registrado en nuestra plataforma
                 const user = await usersService.getByEmail(profile.username);
                 if(!user){
