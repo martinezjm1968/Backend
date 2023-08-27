@@ -18,7 +18,7 @@ router.get("/fail-signup", (req,res)=>{
 router.post("/login", passport.authenticate("loginStrategy",{
     failureRedirect:"/api/sessions/fail-login"
 }), (req,res)=>{
-    res.redirect("/perfil");
+    res.redirect("/profile");
 });
 
 router.get("/fail-login", (req,res)=>{
@@ -33,7 +33,7 @@ router.post("/changePass", async(req,res)=>{
             return res.render("changePassword",{error:"No es posible cambiar la contraseña"});
         }
         user.password = createHash(form.newPassword);
-        // console.log(user);
+        console.log(user);
         await usersService.update(user._id,user);
         return res.render("login",{message:"Contraseña restaurada"})
     } catch (error) {
@@ -46,7 +46,7 @@ router.get("/loginGithub", passport.authenticate("githubLoginStrategy"));
 router.get("/github-callback", passport.authenticate("githubLoginStrategy",{
     failureRedirect:"/api/sessions/fail-signup"
 }), (req,res)=>{
-    res.redirect("/perfil");
+    res.redirect("/profile");
 });
 
 router.get("/logout", (req,res)=>{

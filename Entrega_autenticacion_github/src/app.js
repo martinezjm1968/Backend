@@ -7,7 +7,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { initializePassport } from "./config/passportConfig.js";
 import passport from "passport";
-import  viewsRouter  from "./routes/views.router.js";
+import { viewsRouter }   from "./routes/views.router.js";
 import { sessionsRouter } from "./routes/sessions.routes.js";
 //import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -63,7 +63,7 @@ const socketServer = new Server(httpServer)
 socketProducts(socketServer)
 socketChat(socketServer)
 
-connectDB()
+//connectDB()
 
 //routes
 app.use(viewsRouter);

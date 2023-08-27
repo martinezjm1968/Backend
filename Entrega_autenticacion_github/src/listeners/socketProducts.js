@@ -22,14 +22,14 @@ const socketProducts = (socketServer) => {
 
 
 
-        socket.on("nuevousuario", (usuario) => {
+/*        socket.on("nuevousuario", (usuario) => {
             console.log("usuario", usuario)
             socket.broadcast.emit("broadcast", usuario)
         })
         socket.on("disconnect", () => {
             console.log(`Usuario con ID : ${socket.id} esta desconectado `)
         })
-
+*/
 
     })
 };
