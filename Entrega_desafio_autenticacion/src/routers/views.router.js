@@ -28,7 +28,7 @@ routerV.get("/login", showLoginView, (req,res)=>{
     res.render("login");
 });
 
-routerV.get("/perfil", checkUserAuthenticated, (req,res)=>{
+routerV.get("/profile", checkUserAuthenticated, (req,res)=>{
     console.log(req.session);
     res.render("profile",{user: req.session.userInfo});
 });

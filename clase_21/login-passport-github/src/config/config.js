@@ -7,7 +7,7 @@ export const config = {
         url:"MONGO URL"
     },
     github:{
-        clientId:"GUTHUB CLIENT ID",
+        clientId:"Iv1.8abd785975412e63",
         clienteSecret:"GITHUB CLIENT SECRET",
         callbackUrl:"http://localhost:8080/api/sessions/github-callback"
     }

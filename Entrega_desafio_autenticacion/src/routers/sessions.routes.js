@@ -33,7 +33,7 @@ router.post("/login", async(req,res)=>{
                 first_name:user.first_name,
                 email:user.email
             };
-            res.redirect("/perfil");
+            res.redirect("/profile");
         } else {
             return res.render("login",{error:"Credenciales invalidas"});
         }
