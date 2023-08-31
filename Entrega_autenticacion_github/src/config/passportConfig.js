@@ -69,7 +69,7 @@ export const initializePassport = ()=>{
                 const user = await usersService.getByEmail(profile.username);
                 if(!user){
                     const newUser = {
-                        first_name: '',
+                        first_name: profile.username,
                         email: profile.username,
                         password: createHash(profile.id)
                     };

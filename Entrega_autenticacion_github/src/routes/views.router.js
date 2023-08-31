@@ -21,6 +21,7 @@ routerV.get("/chat", (req, res) => {
 });
 
 routerV.get("/registro", showLoginView, (req, res) => {
+    console.log("Pasa por registro paso 1");
     res.render("signup");
 });
 
@@ -33,8 +34,8 @@ routerV.get("/cambio-password", showLoginView, (req, res) => {
 });
 
 routerV.get("/profile", checkUserAuthenticated, (req, res) => {
-    console.log(req.session);
-    res.render("profile", { user: req.session.userInfo });
+    console.log(req.user);
+    res.render("profile", { user: req.user });
 });
 
 export {routerV as viewsRouter};
