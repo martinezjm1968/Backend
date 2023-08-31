@@ -12,7 +12,7 @@ export const config = {
     },
     github:{
         clientId:"Iv1.8abd785975412e63",
-        clienteSecret:"11b5be0106179aa0e8ede001a61a56ee984d0bfb",
-        callbackUrl:"http://localhost:8080/api/session/github-callback"
+        clienteSecret:"ddc0e544e137eaece827f61d036a9d8e3d3853fb",
+        callbackUrl:"http://localhost:8080/api/sessions/github-callback"
     }
 }
