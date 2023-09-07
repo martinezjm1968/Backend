@@ -21,16 +21,14 @@ import socketChat from './listeners/socketChat.js';
 const PORT = config.server.port;
 const app = express();
 
-
-app.use(express.static(__dirname + "/public"));
+//middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
 
 const httpServer = app.listen(PORT, () => {
     try {
         console.log(`Listening to the port ${PORT}\n`);
-        //console.log(`\t1). http://localhost:${PORT}/api/products`)
-        //console.log(`\t2). http://localhost:${PORT}/api/carts`);
     }
     catch (err) {
         console.log(err);
@@ -57,7 +55,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+//servidor de websocket
 const socketServer = new Server(httpServer)
 
 socketProducts(socketServer)
