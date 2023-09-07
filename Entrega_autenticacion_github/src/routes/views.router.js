@@ -35,7 +35,9 @@ routerV.get("/cambio-password", showLoginView, (req, res) => {
 
 routerV.get("/profile", checkUserAuthenticated, (req, res) => {
     console.log(req.user);
+    
     res.render("profile", { user: req.user });
+    
 });
 
 export {routerV as viewsRouter};
