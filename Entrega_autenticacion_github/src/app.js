@@ -70,5 +70,7 @@ app.use(viewsRouter);
 app.use("/api/sessions", sessionsRouter);
 
 
+console.log(process.argv);
+
 
 
