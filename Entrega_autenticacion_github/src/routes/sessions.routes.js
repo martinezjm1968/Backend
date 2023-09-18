@@ -2,68 +2,30 @@ import { Router } from "express";
 import { usersService } from "../dao/index.js";
 import { createHash, isValidPassword } from "../utils.js";
 import passport from "passport";
+import { SessionsController } from "../controllers/session.controller.js";
 
 const router = Router();
 
 router.post("/signup", passport.authenticate("signupStrategy",{
     failureRedirect:"/api/sessions/fail-signup"
-}) , (req,res)=>{
-    res.render("login",{message:"usuario registrado"});
-});
+}) , SessionsController.signup);
 
-router.get("/fail-signup", (req,res)=>{
-    res.render("signup",{error:"No se pudo registrar el usuario"});
-});
+router.get("/fail-signup", SessionsController.failSignup);
 
 router.post("/login", passport.authenticate("loginStrategy",{
     failureRedirect:"/api/sessions/fail-login"
-}), (req,res)=>{
-    res.redirect("/profile");
-});
+}), SessionsController.redirectLogin);
 
-router.get("/fail-login", (req,res)=>{
-    res.render("login",{error:"Credenciales invalidas"});
-});
+router.get("/fail-login", SessionsController.failLogin);
 
-router.post("/changePass", async(req,res)=>{
-    try {
-        const form = req.body;
-        const user = await usersService.getByEmail(form.email);
-        if(!user){
-            return res.render("changePassword",{error:"No es posible cambiar la contraseña"});
-        }
-        user.password = createHash(form.newPassword);
-        console.log(user);
-        await usersService.update(user._id,user);
-        return res.render("login",{message:"Contraseña restaurada"})
-    } catch (error) {
-        res.render("changePassword",{error:error.message});
-    }
-});
+router.post("/changePass", SessionsController.changePassword);
 
 router.get("/loginGithub", passport.authenticate("githubLoginStrategy"));
-console.log("Paso 2, antes de github-callback");
 
 router.get("/github-callback", passport.authenticate("githubLoginStrategy",{
     failureRedirect:"/api/sessions/fail-signup"
-    
-}), (req,res)=>{
-    console.log("Paso 2, github-callback");
-    res.redirect("/profile");
-});
+}), SessionsController.loginGitHub);
 
-router.get("/logout", (req,res)=>{
-    req.logOut(error=>{
-        if(error){
-            return res.render("profile",{user: req.user, error:"No se pudo cerrar la sesion"});
-        } else {
-            //req.session.destroy elimina la sesion de la base de datos
-            req.session.destroy(error=>{
-                if(error) return res.render("profile",{user: req.session.userInfo, error:"No se pudo cerrar la sesion"});
-                res.redirect("/");
-            })
-        }
-    })
-});
+router.get("/logout", SessionsController.logout);
 
 export {router as sessionsRouter};
