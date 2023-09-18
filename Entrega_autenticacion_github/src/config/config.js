@@ -1,18 +1,21 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 export const config = {
     server:{
-        port:8080,
-        secretSession:"claveSecretaSessions"
+        port:process.env.PORT,
+        secretSession:process.env.SECRET_SESSION
     },
     fileSystem:{
         productsFile:"products.json",
         cartFile:"carts.json"
     },
     mongo:{
-        url:"mongodb+srv://JMMartinez68:mily060601@cluster0.kcahmxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
+        url: process.env.MONGO_URL
     },
     github:{
-        clientId:"Iv1.8abd785975412e63",
-        clienteSecret:"ddc0e544e137eaece827f61d036a9d8e3d3853fb",
-        callbackUrl:"http://localhost:8080/api/sessions/github-callback"
+        clientId:process.env.CLIENT_ID,
+        clienteSecret: process.env.CLIENT_SECRET,
+        callbackUrl: process.env.CALLBACK_URL
     }
 }

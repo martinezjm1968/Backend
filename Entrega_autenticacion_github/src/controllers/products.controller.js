@@ -1,3 +1,4 @@
+import { ProductService } from '../services/products.service.js';
 import { ProductManagerMongo } from '../dao/managers/productManagerMongo.js';
 const pm = new ProductManagerMongo()
 
@@ -35,15 +36,15 @@ export class ProductsController {
                 return { prevLink, nextLink };
             }
             // Devuelve un array con las categorias disponibles y compara con la query "category"
-            const categories = await pm.categories()
+            const categories = await ProductService.categories();
             const result = categories.some(categ => categ === category)
             if (result) {
-                const products = await pm.getProducts({ category }, options);
+                const products = await ProductService.getProducts({ category }, options);
                 const { prevLink, nextLink } = links(products);
                 const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products
                 return res.status(200).send({ status: 'success', payload: docs, totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, prevLink, nextLink });
             }
-            const products = await pm.getProducts({}, options);
+            const products = await ProductService.getProducts({}, options);
             const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products
             const { prevLink, nextLink } = links(products);
             return res.status(200).send({ status: 'success', payload: docs, totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, prevLink, nextLink });
@@ -54,27 +55,27 @@ export class ProductsController {
 
     static getProductID = async (req, res) => {
         const { pid } = req.params
-        const productfind = await pm.getProductById(pid);
+        const productfind = await ProductService.getProductById(pid);
         res.json({ status: "success", productfind });
     };
 
     static createProduct = async (req, res) => {
         const obj = req.body
-        const newproduct = await pm.addProduct(obj);
+        const newproduct = await ProductService.addProduct(obj);
         res.json({ status: "success", newproduct });
     };
 
     static updateProduct = async (req, res) => {
         const { pid } = req.params
         const obj = req.body
-        const updatedproduct = await pm.updateProduct(pid, obj);
+        const updatedproduct = await ProductService.updateProduct(pid, obj);
         console.log(updatedproduct)
         res.json({ status: "success", updatedproduct });
     };
 
     static deleteProduct = async (req, res) => {
         const id = req.params.pid
-        const deleteproduct = await pm.deleteProduct(id);
+        const deleteproduct = await ProductService.deleteProduct(id);
         res.json({ status: "success", deleteproduct });
     };
 }
