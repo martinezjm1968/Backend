@@ -13,4 +13,4 @@ routerP.put("/:pid", ProductsController.updateProduct);
 
 routerP.delete("/:pid", ProductsController.deleteProduct);
 
-export default routerP
+export {routerP as productsRouter}
