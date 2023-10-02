@@ -1,50 +1,42 @@
-import express from 'express';
-import { config } from "./config/config.js";
+import express from "express";
+import {config} from "./config/config.js";
+import { connectDB } from "./config/dbConnection.js";
 import { engine } from 'express-handlebars';
 import path from "path";
-import { __dirname } from "./utils.js"
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import { initializePassport } from "./config/passportConfig.js";
-import passport from "passport";
-import { viewsRouter }   from "./routes/views.router.js";
-import { sessionsRouter } from "./routes/sessions.routes.js";
-//import handlebars from 'express-handlebars';
-import { Server } from 'socket.io';
-import {connectDB} from "./config/configServer.js"
-//socketservers
-import socketProducts from "./listeners/socketProducts.js"
-import socketChat from './listeners/socketChat.js';
+import {__dirname} from "./utils.js";
+import { Server } from "socket.io";
 import { chatModel } from "./dao/models/chat.model.js";
+
+import passport from "passport";
+import session from "express-session";
+import { initializePassport } from "./config/passport.config.js";
+import MongoStore from "connect-mongo";
 
 import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
+import { viewsRouter } from "./routes/views.routes.js";
+import { sessionsRouter } from "./routes/sessions.routes.js";
 
-
-
-const PORT = config.server.port;
+const port = config.server.port;
 const app = express();
 
 //middlewares
-app.use(express.json()); // json en el body de una petición
-app.use(express.urlencoded({ extended: true })); // json si la petición viene de un formulario
-app.use(express.static(__dirname + "/public"));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname,"/public")));
+
 //servidor de express
-const httpServer = app.listen(PORT, () => {
-    try {
-        console.log(`Listening to the port ${PORT}\n`);
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
+const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
+
+//conexión a la base de datos
+connectDB();
 
 //configuracion de handlebars
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname,"/views"));
 
-//configuracion de sesiones
+//configuracion de session
 app.use(session({
     store:MongoStore.create({
         mongoUrl:config.mongo.url
@@ -86,28 +78,3 @@ io.on("connection",(socket)=>{
         io.emit("messageHistory", messages);
     })
 });
-
-
-
-
-
-
-
-/*
-//servidor de websocket
-const socketServer = new Server(httpServer)
-
-socketProducts(socketServer)
-socketChat(socketServer)
-
-//connectDB()
-
-//routes
-app.use(viewsRouter);
-app.use("/api/sessions", sessionsRouter);
-
-
-console.log(process.argv);
-*/
-
-

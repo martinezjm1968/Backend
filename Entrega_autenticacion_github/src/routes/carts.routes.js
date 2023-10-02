@@ -181,4 +181,4 @@ routerC.delete('/:cid', async (req, res) => {
   }
 });
 
-export default routerC
+export {routerC as cartsRouter}
