@@ -18,4 +18,8 @@ routerV.get("/cambio-password", showLoginView, ViewController.renderCambioPasswo
 
 routerV.get("/profile", checkUserAuthenticated, ViewController.renderProfile);
 
+routerV.get("/forgot-password", ViewController.renderForgot);
+
+routerV.get("/reset-password", ViewController.renderResetPass);
+
 export {routerV as viewsRouter};

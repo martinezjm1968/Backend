@@ -12,4 +12,8 @@ export class UsersService{
     static getUserByID = async(id)=>{
         return await usersService.getById(id);
     };
+
+    static updateUser = async(userId,userInfo)=>{
+        return await usersService.update(userId,userInfo);
+    };
 }

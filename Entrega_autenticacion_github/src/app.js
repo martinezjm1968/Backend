@@ -23,6 +23,8 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { generateUser } from './utils/helpers.js'; 
 import { addLogger } from "./helpers/logger.js";
 
+import { usersRouter } from "./routes/users.routes.js";
+
 const PORT = config.server.port;
 const app = express();
 const logger = addLogger();
@@ -68,6 +70,7 @@ app.use(viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", usersRouter);
 app.use(errorHandler);
 
 //servidor de websocket

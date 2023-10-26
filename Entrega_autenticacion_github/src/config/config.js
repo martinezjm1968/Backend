@@ -17,5 +17,10 @@ export const config = {
         clientId:process.env.CLIENT_ID,
         clienteSecret: process.env.CLIENT_SECRET,
         callbackUrl: process.env.CALLBACK_URL
+    },
+    gmail:{
+        account:process.env.GMAIL_SALES,
+        password:process.env.GMAIL_SALES_PASSWORD,
+        secretToken:process.env.SECRET_TOKEN_EMAIL
     }
 }

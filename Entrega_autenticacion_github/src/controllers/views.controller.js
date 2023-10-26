@@ -30,6 +30,13 @@ export class ViewController {
         res.render("profile", { user: req.user });
         
     }
+    static renderForgot = (req,res)=>{
+        res.render("forgotPassword");
+    };
 
+    static renderResetPass = (req,res)=>{
+        const token = req.query.token;
+        res.render("resetPassword",{token});
+    };
 
 }
