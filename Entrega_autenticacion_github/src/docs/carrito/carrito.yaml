@@ -3,7 +3,7 @@ paths:
     get:
       summary: Endpoint para obtener todos los carritos
       tags:
-        - Carritos
+        - Carrito
       responses:
         "200":
           description: Se obtuvieron correctamente los carritos
@@ -21,7 +21,7 @@ paths:
     get:
       summary: Endpoint para obtener informacion de un carrito
       tags:
-        - Carritos
+        - Carrito
       parameters:
         - name: uid
           in: path

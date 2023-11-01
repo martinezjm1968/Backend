@@ -3,7 +3,7 @@ paths:
     get:
       summary: Endpoint para obtener todos los productos
       tags:
-        - Productos
+        - Producto
       responses:
         "200":
           description: Se obtuvieron correctamente los productos
@@ -21,7 +21,7 @@ paths:
     get:
       summary: Endpoint para obtener informacion de un producto
       tags:
-        - Productos
+        - Producto
       parameters:
         - name: uid
           in: path
