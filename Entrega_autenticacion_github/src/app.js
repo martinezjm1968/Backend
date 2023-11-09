@@ -130,3 +130,4 @@ app.get("/operacionCompleja",(req,res)=>{
 //endpoint para acceder a la documentacion de la api
 app.use("/api/docs",swaggerUI.serve,swaggerUI.setup(swaggerSpecs));
 
+export {app}
