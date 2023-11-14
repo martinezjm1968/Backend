@@ -6,7 +6,7 @@ import userModel from "../src/dao/models/User.js";
 const expect = chai.expect;
 const requester = supertest(app);//elemento para hacer peticiones al servidor.
 
-describe("Pruebas app Carrito", function(){
+describe("Pruebas app Mascotas", function(){
     describe("Test modulo sessions", function(){
         const mockUser = {
             first_name:"Pepe",
